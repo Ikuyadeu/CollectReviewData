@@ -43,21 +43,21 @@ def main():
     # Get changes
     sys.stdout.write("\rCollecting changes...")
     sql = "SELECT id, ch_Id, ch_changeId, ch_changeIdNum \
-    FROM t_change"
+           FROM t_change"
     cursor.execute(sql)
     changes = cursor.fetchall()
 
     # Get revisions
     sys.stdout.write("\rCollecting revisions...")
     sql = "SELECT id, rev_Id, rev_changeId \
-    FROM t_revision"
+           FROM t_revision"
     cursor.execute(sql)
     revisions = cursor.fetchall()
 
     # Get files
     sys.stdout.write("\rCollecting files...")
     sql = "SELECT f_fileName, f_revisionId \
-    FROM t_file"
+           FROM t_file"
     cursor.execute(sql)
     files = cursor.fetchall()
 
@@ -95,6 +95,7 @@ def main():
     # Output
     with open(current_db + ".csv", 'w') as csvfile:
         writer = csv.writer(csvfile, lineterminator='\n')
+        sys.stdout.write("\rOutputting files...")
         writer.writerow(["ch_id", "ch_change_id", "ch_change_id_num",
                          "rev_id", "rev_change_id", "f_file_name"])
         writer.writerows(output_files)
