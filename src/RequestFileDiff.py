@@ -33,10 +33,7 @@ def main():
     if not os.path.exists(projects_path):
         os.mkdir(projects_path)
 
-    csv_len = 0
-    with open(current_db + ".csv", 'r') as csvfile:
-        reader = csv.DictReader(csvfile, lineterminator='\n')
-        csv_len = len(list(reader))
+    csv_len = sum(1 for line in open(current_db + ".csv", 'r'))
 
     with open(current_db + ".csv", 'r') as csvfile:
         reader = csv.DictReader(csvfile, lineterminator='\n')
