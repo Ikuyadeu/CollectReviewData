@@ -14,16 +14,20 @@ import requests
 
 def main():
     """
-    Main
+    Main 41001
     """
     # Set argument
     argv = sys.argv
-    if len(argv) == 3:
+    if len(argv) == 5:
         current_db = argv[1]
         requests_header = argv[2]
+        start = int(argv[3])
+        end = int(argv[4])
     else:
         current_db = "gm_openstack"
         requests_header = "https://review.openstack.org"
+        start = 1
+        end = 10000
 
     # per_time = 100 # 区切り秒
     # per_patch = 100 # 区切りパッチ
@@ -40,6 +44,10 @@ def main():
 
         # start_time = time()
         for i, rev_file in enumerate(reader, start=1):
+            if i < start:
+                continue
+            if i >= end:
+                break
             rev_id = rev_file["rev_id"]
             f_file_name = rev_file["f_file_name"]
             requests_url = "/".join([requests_header,
