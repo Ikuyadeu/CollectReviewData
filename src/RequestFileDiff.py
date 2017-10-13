@@ -8,7 +8,8 @@ $ python3 src/RequestFileDiff.py gm_openstack https://review.openstack.org
 import csv
 import sys
 import os
-# from time import sleep, time
+from time import sleep
+# from time import time
 import requests
 
 def main():
@@ -17,8 +18,7 @@ def main():
     """
     # Set argument
     argv = sys.argv
-    argc = len(argv)
-    if argc == 3:
+    if len(argv) == 3:
         current_db = argv[1]
         requests_header = argv[2]
     else:
@@ -37,7 +37,6 @@ def main():
     with open(current_db + ".csv", 'r') as csvfile:
         reader = csv.DictReader(csvfile, lineterminator='\n')
         csv_len = len(list(reader))
-        csv_len = 4528235
 
     with open(current_db + ".csv", 'r') as csvfile:
         reader = csv.DictReader(csvfile, lineterminator='\n')
