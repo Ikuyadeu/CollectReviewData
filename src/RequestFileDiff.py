@@ -39,17 +39,16 @@ def main():
         reader = csv.DictReader(csvfile, lineterminator='\n')
 
         for i, rev_file in enumerate(reader, start=1):
-            if i < 500:
-                continue
             rev_id = rev_file["rev_id"]
             f_file_name = rev_file["f_file_name"]
 
+            #try:
             # Get json data
             requests_url = "/".join([requests_header,
-                                     "changes", rev_file["ch_id"],
-                                     "revisions", rev_id,
-                                     "files", f_file_name,
-                                     "diff"])
+                                    "changes", rev_file["ch_id"],
+                                    "revisions", rev_id,
+                                    "files", f_file_name,
+                                    "diff"])
             response = requests.get(requests_url)
 
             # Output
@@ -62,6 +61,9 @@ def main():
             if i % 100 == 0:
                 sleep(30)
                 print()
+            #except connectionError:
+            #    sleep(30)
+            #    print("%d" % (rev_file["rev_id"]))
 
 if __name__ == '__main__':
     main()
