@@ -82,12 +82,12 @@ def make_param_from(rev_patch_set_num, base_mode):
     """
     Return requests parameter
     """
-    if base_mode == FROM_BASE:
+    if base_mode == FROM_BASE or rev_patch_set_num == 1:
         return None
     if base_mode == FROM_INI:
-        return None if rev_patch_set_num == 1 else {"base": "1"}
+        return {"base": "1"}
     if base_mode == FROM_PREV:
-        return None if rev_patch_set_num == 1 else {"base": str(rev_patch_set_num-1)}
+        return {"base": str(rev_patch_set_num-1)}
 
 
 if __name__ == '__main__':
