@@ -9,7 +9,6 @@ import csv
 import sys
 import os
 from time import sleep
-# from time import time
 import requests
 
 def main():
@@ -17,20 +16,11 @@ def main():
     Main 41001
     """
     # Set argument
-    argv = sys.argv
-    if len(argv) == 5:
-        current_db = argv[1]
-        requests_header = argv[2]
-        start = int(argv[3])
-        end = int(argv[4])
-    else:
-        current_db = "gm_openstack"
-        requests_header = "https://review.openstack.org"
-        start = 1
-        end = 10000
-
-    # per_time = 100 # 区切り秒
-    # per_patch = 100 # 区切りパッチ
+    assert(len(sys.argv) == 5)
+    current_db = sys.argv[1]
+    requests_header = sys.argv[2] # exp) https://review.openstack.org
+    start = int(sys.argv[3])
+    end = int(sys.argv[4])
 
     # Make project's directory
     projects_path = "./revision_files/" + current_db
@@ -42,19 +32,28 @@ def main():
     with open(current_db + ".csv", 'r') as csvfile:
         reader = csv.DictReader(csvfile, lineterminator='\n')
 
-        # start_time = time()
         for i, rev_file in enumerate(reader, start=1):
             if i < start:
                 continue
             if i >= end:
                 break
-            rev_id = rev_file["rev_id"]
             f_file_name = rev_file["f_file_name"]
-            requests_url = "/".join([requests_header,
-                                     "changes", rev_file["ch_id"],
-                                     "revisions", rev_id,
-                                     "files", f_file_name,
-                                     "diff"])
+            rev_id = rev_file["rev_id"]
+            rev_patchSetNum = int(rev_file["rev_patchSetNum"])
+            if rev_patchSetNum == 1:
+                requests_url = "/".join([requests_header,
+                                        "changes", rev_file["ch_id"],
+                                        "revisions", str(rev_patchSetNum),
+                                        "files", f_file_name,
+                                        "diff"])
+                print("\n"+requests_url)
+            else:
+                requests_url = "/".join([requests_header,
+                                        "changes", rev_file["ch_id"],
+                                        "revisions", str(rev_patchSetNum),
+                                        "files", f_file_name,
+                                        "diff?base="+str(rev_patchSetNum-1)])
+                print("\n"+requests_url)
 
             try:
                 response = requests.get(requests_url)
@@ -69,13 +68,7 @@ def main():
                 os.mkdir(revisions_path)
             with open("/".join([revisions_path, f_file_name + ".json"]), 'w') as rev_file:
                 rev_file.write(response.text)
-            sys.stdout.write("\rFile: %d / %d" % (i, csv_len))
-            # if i % per_patch == 0:
-            #     if start_time - time() < per_time:
-            #         print(start_time - time())
-            #         sleep(per_time - (start_time - time()))
-            #     start_time = time()
-            #     print()
+            sys.stdout.write("\rFile: %d / %d" % (i, end))
 
 if __name__ == '__main__':
     main()
