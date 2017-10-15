@@ -35,7 +35,7 @@ def main():
         for i, rev_file in enumerate(reader, start=1):
             if i < start:
                 continue
-            if i >= end:
+            if i > end:
                 break
             f_file_name = rev_file["f_file_name"]
             rev_id = rev_file["rev_id"]
