@@ -49,7 +49,7 @@ def main():
 
     # Get revisions
     sys.stdout.write("\rCollecting revisions...")
-    sql = "SELECT id, rev_Id, rev_changeId \
+    sql = "SELECT id, rev_Id, rev_changeId, rev_patchSetNum \
            FROM t_revision"
     cursor.execute(sql)
     revisions = cursor.fetchall()
@@ -86,8 +86,9 @@ def main():
             rev_files = t_file_dic[revision[0]]
             rev_id = revision[1]
             rev_change_id = revision[2]
+            rev_patchSetNum = revision[3]
             output_files += [[ch_id, ch_change_id, ch_change_id_num,
-                              rev_id, rev_change_id, quote_plus(rev_file[0])]
+                              rev_id, rev_change_id, quote_plus(rev_file[0]), rev_patchSetNum]
                              for rev_file in rev_files]
             sys.stdout.write("\rChange: %d / %d, Revision: %d / %d" %
                              (i, changes_len, j, revisions_len))
@@ -97,7 +98,7 @@ def main():
         writer = csv.writer(csvfile, lineterminator='\n')
         sys.stdout.write("\rOutputting files...")
         writer.writerow(["ch_id", "ch_change_id", "ch_change_id_num",
-                         "rev_id", "rev_change_id", "f_file_name"])
+                         "rev_id", "rev_change_id", "f_file_name", "rev_patchSetNum"])
         writer.writerows(output_files)
 
 if __name__ == '__main__':

@@ -28,10 +28,7 @@ def main():
         requests_header = "https://review.openstack.org"
         start = 1
         end = 10000
-
-    # per_time = 100 # 区切り秒
-    # per_patch = 100 # 区切りパッチ
-
+        
     # Make project's directory
     projects_path = "./revision_files/" + current_db
     if not os.path.exists(projects_path):
