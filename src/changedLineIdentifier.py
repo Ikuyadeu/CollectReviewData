@@ -7,7 +7,6 @@
 ### Import lib
 import sys
 import csv
-import MySQLdb
 import datetime
 import json
 import re
