@@ -46,14 +46,12 @@ def main():
                                         "revisions", str(rev_patchSetNum),
                                         "files", f_file_name,
                                         "diff"])
-                print("\n"+requests_url)
             else:
                 requests_url = "/".join([requests_header,
                                         "changes", rev_file["ch_id"],
                                         "revisions", str(rev_patchSetNum),
                                         "files", f_file_name,
                                         "diff?base="+str(rev_patchSetNum-1)])
-                print("\n"+requests_url)
 
             try:
                 response = requests.get(requests_url)
