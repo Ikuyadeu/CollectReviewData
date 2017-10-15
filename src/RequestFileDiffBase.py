@@ -65,7 +65,11 @@ def main():
             if not os.path.exists(revisions_path):
                 os.mkdir(revisions_path)
             with open("/".join([revisions_path, f_file_name + ".json"]), 'w') as rev_file:
-                rev_file.write(response.text)
+                rev_file.write(response.text.encode('utf-8'))
+                # try:
+                #     rev_file.write(response.text)
+                # except:
+                #     print(response.text)
             sys.stdout.write("\rFile: %d / %d" % (i, end))
 
 if __name__ == '__main__':
