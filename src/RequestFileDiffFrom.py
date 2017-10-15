@@ -19,7 +19,6 @@ def main():
     """
     Main
     """
-
     base_mode = FROM_BASE
     if "--from-ini" in sys.argv:
         base_mode = FROM_INI
@@ -65,7 +64,7 @@ def main():
             try:
                 response = requests.get(requests_url, params=params)
             except requests.ConnectionError as err:
-                print(str(i) + ": " + str(err))
+                print(" " + str(i) + ": " + str(err))
                 sleep(5)
                 response = requests.get(requests_url, params=params)
             response.encoding = 'utf-8'
@@ -84,9 +83,9 @@ def make_param_from(rev_patch_set_num, base_mode):
     """
     if base_mode == FROM_BASE or rev_patch_set_num == 1:
         return None
-    if base_mode == FROM_INI:
+    elif base_mode == FROM_INI:
         return {"base": "1"}
-    if base_mode == FROM_PREV:
+    elif base_mode == FROM_PREV:
         return {"base": str(rev_patch_set_num-1)}
 
 
