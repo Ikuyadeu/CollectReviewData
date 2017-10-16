@@ -59,13 +59,13 @@ def main():
                 print(str(i) + ": " + str(err))
                 sleep(5)
                 response = requests.get(requests_url)
-
+            response.encoding = "utf-8"
             # Output
             revisions_path = "/".join([projects_path, rev_id])
             if not os.path.exists(revisions_path):
                 os.mkdir(revisions_path)
             with open("/".join([revisions_path, f_file_name + ".json"]), 'w') as rev_file:
-                rev_file.write(response.text.encode('utf-8'))
+                rev_file.write(response.text)
                 # try:
                 #     rev_file.write(response.text)
                 # except:

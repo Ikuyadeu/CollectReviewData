@@ -51,7 +51,10 @@ def main():
             if i > end:
                 break
             f_file_name = rev_file["f_file_name"]
+<<<<<<< HEAD
             rev_id = rev_file["rev_id"]
+=======
+>>>>>>> 64c9aaa3b30084f86221bdde53ad922a694c31ff
             rev_patch_set_num = int(rev_file["rev_patchSetNum"])
 
             requests_url = "/".join([requests_header,
@@ -61,6 +64,7 @@ def main():
                                      "diff"])
             params = make_param_from(rev_patch_set_num, base_mode)
 
+<<<<<<< HEAD
             try:
                 response = requests.get(requests_url, params=params)
             except requests.ConnectionError as err:
@@ -71,6 +75,21 @@ def main():
 
             # Output
             revisions_path = "/".join([projects_path, rev_id])
+=======
+
+            for _ in range(1, 3):
+                try:
+                    response = requests.get(requests_url, params=params)
+                except requests.ConnectionError as err:
+                    print("\n" + str(i) + ": " + str(err))
+                    sleep(10)
+                else:
+                    break
+            response.encoding = 'utf-8'
+
+            # Output
+            revisions_path = "/".join([projects_path, rev_file["rev_id"]])
+>>>>>>> 64c9aaa3b30084f86221bdde53ad922a694c31ff
             if not os.path.exists(revisions_path):
                 os.mkdir(revisions_path)
             with open("/".join([revisions_path, f_file_name + ".json"]), 'w') as rev_file:
