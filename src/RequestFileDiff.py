@@ -1,78 +1,95 @@
 #!/usr/bin/env python3
 """
 Get file revised from csv
-Usage:
-$ python3 src/RequestFileDiff.py gm_openstack https://review.openstack.org
 """
-
 import csv
 import sys
 import os
 from time import sleep
-# from time import time
 import requests
+
+USAGE = "Usage: python3 src/RequestFileDiff.py current_db requests_header start end\
+[--from-ini] [--from-prev]"
+
+FROM_BASE = 0
+FROM_INI = 1
+FROM_PREV = 2
 
 def main():
     """
-    Main 41001
+    Main
     """
+    base_mode = FROM_BASE
+    if "--from-ini" in sys.argv:
+        base_mode = FROM_INI
+        sys.argv.remove("--from-ini")
+    elif "--from-prev" in sys.argv:
+        base_mode = FROM_PREV
+        sys.argv.remove("--from-prev")
+
+    if len(sys.argv) != 5 or "-h" in sys.argv or "--help" in sys.argv:
+        print(USAGE)
+        return
+
     # Set argument
-    argv = sys.argv
-    if len(argv) == 5:
-        current_db = argv[1]
-        requests_header = argv[2]
-        start = int(argv[3])
-        end = int(argv[4])
-    else:
-        current_db = "gm_openstack"
-        requests_header = "https://review.openstack.org"
-        start = 1
-        end = 10000
-        
+    current_db = sys.argv[1]
+    requests_header = sys.argv[2] # exp) https://review.openstack.org
+    start = int(sys.argv[3])
+    end = int(sys.argv[4])
+
     # Make project's directory
     projects_path = "./revision_files/" + current_db
     if not os.path.exists(projects_path):
         os.mkdir(projects_path)
 
-    csv_len = sum(1 for line in open(current_db + ".csv", 'r'))
-
     with open(current_db + ".csv", 'r') as csvfile:
         reader = csv.DictReader(csvfile, lineterminator='\n')
 
-        # start_time = time()
         for i, rev_file in enumerate(reader, start=1):
             if i < start:
                 continue
             if i > end:
                 break
-            rev_id = rev_file["rev_id"]
             f_file_name = rev_file["f_file_name"]
+            rev_patch_set_num = int(rev_file["rev_patchSetNum"])
+
             requests_url = "/".join([requests_header,
                                      "changes", rev_file["ch_id"],
-                                     "revisions", rev_id,
+                                     "revisions", str(rev_patch_set_num),
                                      "files", f_file_name,
                                      "diff"])
+            params = make_param_from(rev_patch_set_num, base_mode)
 
-            try:
-                response = requests.get(requests_url)
-            except requests.ConnectionError as err:
-                print(str(i) + ": " + str(err))
-                sleep(5)
-                response = requests.get(requests_url)
+
+            for _ in range(1, 5):
+                try:
+                    response = requests.get(requests_url, params=params)
+                except requests.ConnectionError as err:
+                    print("\n" + str(i) + ": " + str(err))
+                    sleep(30)
+                else:
+                    break
+            response.encoding = 'utf-8'
 
             # Output
-            revisions_path = "/".join([projects_path, rev_id])
+            revisions_path = "/".join([projects_path, rev_file["rev_id"]])
             if not os.path.exists(revisions_path):
                 os.mkdir(revisions_path)
             with open("/".join([revisions_path, f_file_name + ".json"]), 'w') as rev_file:
                 rev_file.write(response.text)
-            sys.stdout.write("\rFile: %d / %d" % (i, csv_len))
-            # if i % per_patch == 0:
-            #     if start_time - time() < per_time:
-            #         print(start_time - time())
-            #         sleep(per_time - (start_time - time()))
-            #     start_time = time()
-            #     print()
+            sys.stdout.write("\rFile: %d / %d" % (i, end))
+
+def make_param_from(rev_patch_set_num, base_mode):
+    """
+    Return requests parameter
+    """
+    if base_mode == FROM_BASE or rev_patch_set_num == 1:
+        return None
+    elif base_mode == FROM_INI:
+        return {"base": "1"}
+    elif base_mode == FROM_PREV:
+        return {"base": str(rev_patch_set_num-1)}
+
 
 if __name__ == '__main__':
     main()
