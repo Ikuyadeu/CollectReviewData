@@ -7,6 +7,6 @@
 2. ubuntu@ec2-13-112-73-47.ap-northeast-1.compute.amazonaws.com
     * 900001-1100000
 3. ubuntu@ec2-13-113-205-121.ap-northeast-1.compute.amazonaws.com
-    * 110001-1400000
+    * 1100001-1400000
 4. NAIST
     * 0-400000
