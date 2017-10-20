@@ -3,10 +3,10 @@
 Get file revised from csv
 """
 from csv import DictReader
-import sys
-import os
+from sys import argv, stdout
+from os import mkdir, path
 from time import sleep
-import requests
+from requests import get, exceptions
 
 USAGE = "Usage: python3 src/RequestFileDiff.py current_db requests_header start end\
 [--from-ini] [--from-prev]"
@@ -20,27 +20,27 @@ def main():
     Main
     """
     base_mode = FROM_BASE
-    if "--from-ini" in sys.argv:
+    if "--from-ini" in argv:
         base_mode = FROM_INI
-        sys.argv.remove("--from-ini")
-    elif "--from-prev" in sys.argv:
+        argv.remove("--from-ini")
+    elif "--from-prev" in argv:
         base_mode = FROM_PREV
-        sys.argv.remove("--from-prev")
+        argv.remove("--from-prev")
 
-    if len(sys.argv) != 5 or "-h" in sys.argv or "--help" in sys.argv:
+    if len(argv) != 5 or "-h" in argv or "--help" in argv:
         print(USAGE)
         return
 
     # Set argument
-    current_db = sys.argv[1]
-    requests_header = sys.argv[2] # exp) https://review.openstack.org
-    start = int(sys.argv[3])
-    end = int(sys.argv[4])
+    current_db = argv[1]
+    requests_header = argv[2] # exp) https://review.openstack.org
+    start = int(argv[3])
+    end = int(argv[4])
 
     # Make project's directory
     projects_path = "./revision_files/" + current_db
-    if not os.path.exists(projects_path):
-        os.mkdir(projects_path)
+    if not path.exists(projects_path):
+        mkdir(projects_path)
 
     with open(current_db + ".csv", 'r') as csvfile:
         reader = DictReader(csvfile, lineterminator='\n')
@@ -56,15 +56,15 @@ def main():
 
             requests_url = "/".join([requests_header,
                                      "changes", rev_file["ch_id"],
-                                     "revisions", rev_file["rev_patchSetNum"],
+                                     "revisions", rev_patch_set_num,
                                      "files", f_file_name,
                                      "diff"])
             params = make_param_from(int(rev_patch_set_num), base_mode)
 
             for _ in range(1, 5):
                 try:
-                    response = requests.get(requests_url, params=params)
-                except requests.ConnectionError as err:
+                    response = get(requests_url, params=params)
+                except exceptions.RequestException as err:
                     print("\n" + str(i) + ": " + str(err))
                     sleep(30)
                 else:
@@ -73,11 +73,11 @@ def main():
 
             # Output
             revisions_path = "/".join([projects_path, rev_file["rev_id"]])
-            if not os.path.exists(revisions_path):
-                os.mkdir(revisions_path)
+            if not path.exists(revisions_path):
+                mkdir(revisions_path)
             with open("/".join([revisions_path, f_file_name + ".json"]), 'w') as rev_file:
                 rev_file.write(response.text)
-            sys.stdout.write("\rFile: %d / %d" % (i, end))
+            stdout.write("\rFile: %d / %d" % (i, end))
 
 def make_param_from(rev_patch_set_num, base_mode):
     """
