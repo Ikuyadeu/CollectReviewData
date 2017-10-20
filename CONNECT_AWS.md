@@ -31,16 +31,19 @@ python3 src/RequestFileDiff.py gm_openstack https://review.openstack.org start e
 ```
 
 ## Compress files
-```
+```sh
 sudo apt install zip
 cd revision_files
 zip gm_openstackstart_end -r gm_openstack
-mv gm_openstackstart_end ~
-exit
+mv gm_openstackstart_end.zip ~
 ```
-
 
 ## Get the file by ssh
 ```sh
-scp -i initialkey.pem ubuntu@ec2-user@host:send_file_path.zip .
+exit
+scp -i initialkey.pem ubuntu@ec2-user@host:~/gm_openstackstart_end.zip .
 ```
+
+## Note
+* 200000ファイルを取得するのに約２日(インスタンスはt2mediumだが，t2microでもあまり早さは変わらない)
+* ファイル容量は7GB後半(圧縮すれば800MB前後)
