@@ -2,7 +2,7 @@
 """
 Get file revised from csv
 """
-import csv
+from csv import DictReader
 import sys
 import os
 from time import sleep
@@ -43,23 +43,23 @@ def main():
         os.mkdir(projects_path)
 
     with open(current_db + ".csv", 'r') as csvfile:
-        reader = csv.DictReader(csvfile, lineterminator='\n')
-
+        reader = DictReader(csvfile, lineterminator='\n')
         for i, rev_file in enumerate(reader, start=1):
-            if i < start:
-                continue
+            if i >= start:
+                break
+
+        for i, rev_file in enumerate(reader, start=start):
             if i > end:
                 break
             f_file_name = rev_file["f_file_name"]
-            rev_patch_set_num = int(rev_file["rev_patchSetNum"])
+            rev_patch_set_num = rev_file["rev_patchSetNum"]
 
             requests_url = "/".join([requests_header,
                                      "changes", rev_file["ch_id"],
-                                     "revisions", str(rev_patch_set_num),
+                                     "revisions", rev_file["rev_patchSetNum"],
                                      "files", f_file_name,
                                      "diff"])
-            params = make_param_from(rev_patch_set_num, base_mode)
-
+            params = make_param_from(int(rev_patch_set_num), base_mode)
 
             for _ in range(1, 5):
                 try:
@@ -83,7 +83,7 @@ def make_param_from(rev_patch_set_num, base_mode):
     """
     Return requests parameter
     """
-    if base_mode == FROM_BASE or rev_patch_set_num == 1:
+    if rev_patch_set_num == 1 or base_mode == FROM_BASE:
         return None
     elif base_mode == FROM_INI:
         return {"base": "1"}

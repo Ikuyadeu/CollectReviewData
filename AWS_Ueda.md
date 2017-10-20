@@ -6,6 +6,7 @@
     * 600001-900000
 2. ubuntu@ec2-13-112-73-47.ap-northeast-1.compute.amazonaws.com
     * Openstack:900001-1100000 Done
+    * Eclipse:1-638419
 3. ubuntu@ec2-13-113-205-121.ap-northeast-1.compute.amazonaws.com
     * 1100001-1400000
 4. Mac mini
