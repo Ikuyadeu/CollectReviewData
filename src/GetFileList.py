@@ -87,7 +87,8 @@ def main():
             rev_change_id = revision[2]
             rev_patch_set_num = revision[3]
             output_files += [[ch_id, ch_change_id,
-                              rev_id, rev_change_id, quote_plus(rev_file[0]), rev_patch_set_num]
+                              rev_id, rev_change_id,
+                              quote_plus(rev_file[0]), rev_patch_set_num]
                              for rev_file in rev_files]
             sys.stdout.write("\rChange: %d / %d, Revision: %d / %d" %
                              (i, changes_len, j, revisions_len))
@@ -97,7 +98,8 @@ def main():
         writer = csv.writer(csvfile, lineterminator='\n')
         sys.stdout.write("\rOutputting files...")
         writer.writerow(["ch_id", "ch_change_id",
-                         "rev_id", "rev_change_id", "f_file_name", "rev_patchSetNum"])
+                         "rev_id", "rev_change_id",
+                         "f_file_name", "rev_patchSetNum"])
         writer.writerows(output_files)
 
 if __name__ == '__main__':
