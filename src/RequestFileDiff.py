@@ -64,6 +64,10 @@ def main():
             for _ in range(1, 5):
                 try:
                     response = get(requests_url, params=params)
+                    if response.status_code != 200:
+                        print("\n" + str(i) + ": " + str(response.status_code))
+                        sleep(30)
+                        continue
                 except exceptions.RequestException as err:
                     print("\n" + str(i) + ": " + str(err))
                     sleep(30)
