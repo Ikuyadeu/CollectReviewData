@@ -36,6 +36,8 @@ sudo apt install zip
 cd revision_files
 zip gm_openstackstart_end -r gm_openstack
 mv gm_openstackstart_end.zip ~
+cd ../
+rm -r gm_openstack
 ```
 
 ## Get the file by ssh

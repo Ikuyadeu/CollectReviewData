@@ -28,3 +28,10 @@ $ du -m gm_*.csv
 190     gm_libreoffice.csv
 961     gm_openstack.csv
 ```
+
+レビューシステムURL
+* aosp:https://android-review.googlesource.com
+* eclipse:https://git.eclipse.org
+* gerrithub:https://review.gerrithub.io
+* libreoffice:https://gerrit.libreoffice.org
+* openstack:https://review.openstack.org

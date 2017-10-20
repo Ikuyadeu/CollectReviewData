@@ -5,8 +5,8 @@
 1. ubuntu@ec2-54-64-48-98.ap-northeast-1.compute.amazonaws.com
     * 600001-900000
 2. ubuntu@ec2-13-112-73-47.ap-northeast-1.compute.amazonaws.com
-    * 900001-1100000 Done
+    * Openstack:900001-1100000 Done
 3. ubuntu@ec2-13-113-205-121.ap-northeast-1.compute.amazonaws.com
     * 1100001-1400000
-4. NAIST
+4. Mac mini
     * 0-400000
