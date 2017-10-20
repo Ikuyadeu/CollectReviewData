@@ -54,7 +54,7 @@ def main():
                                         "diff?base="+str(rev_patchSetNum-1)])
             for _ in range(1, 5):
                 try:
-                    response = requests.get(requests_url, params=params)
+                    response = requests.get(requests_url)
                 except requests.ConnectionError as err:
                     print("\n" + str(i) + ": " + str(err))
                     sleep(30)
