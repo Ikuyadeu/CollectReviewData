@@ -30,6 +30,16 @@ mkdir revision_files
 python3 src/RequestFileDiff.py gm_openstack https://review.openstack.org start end --from-ini
 ```
 
+## Compress files
+```
+sudo apt install zip
+cd revision_files
+zip gm_openstackstart_end -r gm_openstack
+mv gm_openstackstart_end ~
+exit
+```
+
+
 ## Get the file by ssh
 ```sh
 scp -i initialkey.pem ubuntu@ec2-user@host:send_file_path.zip .
