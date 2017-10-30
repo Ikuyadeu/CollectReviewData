@@ -4,7 +4,7 @@ Get file revised from csv
 """
 from csv import DictReader
 from sys import argv, stdout
-from os import mkdir, path
+from os import mkdir, path, error
 from time import sleep
 from requests import get, exceptions
 
@@ -80,7 +80,11 @@ def main():
             if not path.exists(revisions_path):
                 mkdir(revisions_path)
             with open("/".join([revisions_path, f_file_name + ".json"]), 'w') as rev_file:
-                rev_file.write(response.text)
+                try:
+                    rev_file.write(response.text)
+                except error:
+                    print("\nOS Error")
+                    continue
             stdout.write("\rFile: %d / %d" % (i, end))
 
 def make_param_from(rev_patch_set_num, base_mode):
