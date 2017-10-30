@@ -79,12 +79,12 @@ def main():
             revisions_path = "/".join([projects_path, rev_file["rev_id"]])
             if not path.exists(revisions_path):
                 mkdir(revisions_path)
-            with open("/".join([revisions_path, f_file_name + ".json"]), 'w') as rev_file:
-                try:
+            try:
+                with open("/".join([revisions_path, f_file_name + ".json"]), 'w') as rev_file:
                     rev_file.write(response.text)
-                except error:
-                    print("\nOS Error")
-                    continue
+            except error:
+                print("\nOS Error")
+                continue
             stdout.write("\rFile: %d / %d" % (i, end))
 
 def make_param_from(rev_patch_set_num, base_mode):
