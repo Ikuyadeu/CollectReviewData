@@ -51,11 +51,11 @@ def main():
         for i, rev_file in enumerate(reader, start=start):
             if i > end:
                 break
-            f_file_name = rev_file["f_file_name"]
-            rev_patch_set_num = rev_file["rev_patchSetNum"]
+            f_file_name = str(rev_file["f_file_name"])
+            rev_patch_set_num = str(rev_file["rev_patchSetNum"])
 
             requests_url = "/".join([requests_header,
-                                     "changes", rev_file["ch_id"],
+                                     "changes", str(rev_file["ch_id"]),
                                      "revisions", rev_patch_set_num,
                                      "files", f_file_name,
                                      "diff"])
@@ -65,7 +65,7 @@ def main():
                 try:
                     response = get(requests_url, params=params)
                     if response.status_code != 200:
-                        print("\n" + str(i) + ": " + str(response.status_code))
+                        print("\n" + str(i) + ": " + requests_url + " "+ str(response.status_code))
                         sleep(30)
                         continue
                 except exceptions.RequestException as err:
