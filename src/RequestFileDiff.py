@@ -66,6 +66,8 @@ def main():
                     response = get(requests_url, params=params)
                     if response.status_code != 200:
                         print("\n" + str(i) + ": " + requests_url + " "+ str(response.status_code))
+                        if response.status_code == 404:
+                            break
                         sleep(30)
                         continue
                 except exceptions.RequestException as err:
