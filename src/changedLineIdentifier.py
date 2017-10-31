@@ -16,8 +16,8 @@ from collections import defaultdict
 specificDir = sys.argv[1]
 startIdx = int(sys.argv[2])
 endIdx = int(sys.argv[3])
-resultFilePatch = '../changedLineList_'+startIdx+'_'+endIdx+'.csv'
-errorFilePatch = '../changedLineListError_'+startIdx+'_'+endIdx+'.csv'
+resultFilePatch = '../changedLineList_'+str(startIdx)+'_'+str(endIdx)+'.csv'
+errorFilePatch = '../changedLineListError_'+str(startIdx)+'_'+str(endIdx)+'.csv'
 fResult = open(resultFilePatch, 'w')
 fErrorLog = open(errorFilePatch, 'w')
 
