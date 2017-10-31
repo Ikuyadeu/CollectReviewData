@@ -41,7 +41,7 @@ with open('../gm_openstack.csv', 'rU') as fImport:
         try:
             jtext = json.loads(jsonFile)
         except :
-            fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+"\n")
+            fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+","+"Error"+"\n")
             continue
         if "change_type" not in jtext.keys():
             continue
@@ -71,3 +71,5 @@ with open('../gm_openstack.csv', 'rU') as fImport:
                 elif 'b' in c.keys():
                     for l in c['b']:
                         bCount += 1
+        else:
+            fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+","+"Delete"+"\n")
