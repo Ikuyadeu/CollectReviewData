@@ -13,12 +13,12 @@ import re
 from collections import defaultdict
 
 ### Import json file
-fResult = open('./data/changedLineList.csv', 'w')
+fResult = open('../data/changedLineList.csv', 'w')
 startIdx = int(sys.argv[1])
 endIdx = int(sys.argv[2])
 
 ### Main
-with open('./gm_openstack.csv', 'rU') as fImport:
+with open('../gm_openstack.csv', 'rU') as fImport:
     reader = csv.DictReader(fImport, lineterminator='\n')
     for i, rev_file in enumerate(reader, start=1):
         if i < startIdx:
@@ -30,7 +30,7 @@ with open('./gm_openstack.csv', 'rU') as fImport:
         f_file_name = rev_file["f_file_name"]
 
         # The json has like ]}' at the begining.
-        fjsonPath = './revision_files/gm_openstack/' + rev_id + '/' + f_file_name + '.json'
+        fjsonPath = '../revision_files/gm_openstack/' + rev_id + '/' + f_file_name + '.json'
         fjson = open(fjsonPath, 'r')
         jsonFile = re.sub(r"^\)\]\}\'", "", fjson.read())
         jtext = json.loads(jsonFile)
