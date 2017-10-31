@@ -44,6 +44,7 @@ with open('../gm_openstack.csv', 'rU') as fImport:
             fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+","+"Error"+"\n")
             continue
         if "change_type" not in jtext.keys():
+            fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+","+"NoChange"+"\n")
             continue
         if (jtext['change_type'] != 'DELETED'):
             aCount = 0
