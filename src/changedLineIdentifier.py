@@ -13,12 +13,13 @@ import re
 from collections import defaultdict
 
 ### Import json file
-fResult = open('./data/changedLineList.csv', 'w')
+fResult = open('../changedLineList.csv', 'w')
+fErrorLog = open('../changedLineList_error.csv', 'w')
 startIdx = int(sys.argv[1])
 endIdx = int(sys.argv[2])
 
 ### Main
-with open('./gm_openstack.csv', 'rU') as fImport:
+with open('../gm_openstack.csv', 'rU') as fImport:
     reader = csv.DictReader(fImport, lineterminator='\n')
     for i, rev_file in enumerate(reader, start=1):
         if i < startIdx:
@@ -28,13 +29,17 @@ with open('./gm_openstack.csv', 'rU') as fImport:
         idx = i
         rev_id = rev_file["rev_id"]
         f_file_name = rev_file["f_file_name"]
-
         # The json has like ]}' at the begining.
-        fjsonPath = './revision_files/gm_openstack/' + rev_id + '/' + f_file_name + '.json'
+        fjsonPath = '../revision_files/gm_openstack/' + rev_id + '/' + f_file_name + '.json'
         fjson = open(fjsonPath, 'r')
-        jsonFile = re.sub(r"^\)\]\}\'", "", fjson.read())
-        jtext = json.loads(jsonFile)
-        print(str(idx)+','+rev_id+','+f_file_name)
+        fjsonEncoded = fjson.read()
+        jsonFile = re.sub(r"^\)\]\}\'", "", fjsonEncoded)
+        sys.stdout.write("\rFile: %d / %d : start %d, end %d " % (i, endIdx, startIdx, endIdx))
+        try:
+            jtext = json.loads(jsonFile)
+        except :
+            fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+"\n")
+            continue
         if "change_type" not in jtext.keys():
             continue
         if (jtext['change_type'] != 'DELETED'):
