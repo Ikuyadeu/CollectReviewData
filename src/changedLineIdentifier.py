@@ -13,7 +13,7 @@ import re
 from collections import defaultdict
 
 ### Import json file
-fResult = open('../data/changedLineList.csv', 'w')
+fResult = open('../changedLineList.csv', 'w')
 startIdx = int(sys.argv[1])
 endIdx = int(sys.argv[2])
 
