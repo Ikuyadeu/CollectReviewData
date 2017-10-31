@@ -44,7 +44,7 @@ with open('../gm_openstack.csv', 'rU') as fImport:
             fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+","+"Error"+"\n")
             continue
         if "change_type" not in jtext.keys():
-            fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+","+"NoChange"+"\n")
+            fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+","+"No_change_type"+"\n")
             continue
         if (jtext['change_type'] != 'DELETED'):
             aCount = 0
@@ -57,6 +57,7 @@ with open('../gm_openstack.csv', 'rU') as fImport:
                 startChange = 0
                 endChange = 0
                 if 'skip' in c.keys():
+                    fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+","+"Skip"+"\n")
                     break
                 if 'ab' in c.keys():
                     assert(('a' not in c.keys()) and ('b' not in c.keys()))
