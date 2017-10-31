@@ -30,6 +30,7 @@ with open('../gm_openstack.csv', 'rU') as fImport:
         if i > endIdx:
             break
         idx = i
+        flg = False
         rev_id = rev_file["rev_id"]
         f_file_name = rev_file["f_file_name"]
         # The json has like ]}' at the begining.
@@ -70,8 +71,13 @@ with open('../gm_openstack.csv', 'rU') as fImport:
                         aCount += 1
                     endChange = aCount
                     fResult.write(str(idx)+','+rev_id+','+f_file_name+','+str(startChange)+','+str(endChange)+"\n")
+                    flg = True
                 elif 'b' in c.keys():
                     for l in c['b']:
                         bCount += 1
+            if (flg != True):
+                fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+","+"OnlyAdded"+"\n")
         else:
             fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+","+"Delete"+"\n")
+            continue
+        
