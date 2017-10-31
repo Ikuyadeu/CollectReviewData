@@ -1,7 +1,7 @@
 ##################
 # Author:Toshiki Hirao
 # Summary: This script finds where the change occured.
-# Usage: ./changedLineIdentifier.py _JSON_
+# Usage: ./changedLineIdentifier.py gm_openstack 1 1000
 ##################
 
 ### Import lib
@@ -13,10 +13,13 @@ import re
 from collections import defaultdict
 
 ### Import json file
-fResult = open('../changedLineList.csv', 'w')
-fErrorLog = open('../changedLineList_error.csv', 'w')
-startIdx = int(sys.argv[1])
-endIdx = int(sys.argv[2])
+specificDir = sys.argv[1]
+startIdx = int(sys.argv[2])
+endIdx = int(sys.argv[3])
+resultFilePatch = '../changedLineList_'+startIdx+'_'+endIdx+'.csv'
+errorFilePatch = '../changedLineListError_'+startIdx+'_'+endIdx+'.csv'
+fResult = open(resultFilePatch, 'w')
+fErrorLog = open(errorFilePatch, 'w')
 
 ### Main
 with open('../gm_openstack.csv', 'rU') as fImport:
@@ -30,7 +33,7 @@ with open('../gm_openstack.csv', 'rU') as fImport:
         rev_id = rev_file["rev_id"]
         f_file_name = rev_file["f_file_name"]
         # The json has like ]}' at the begining.
-        fjsonPath = '../revision_files/gm_openstack/' + rev_id + '/' + f_file_name + '.json'
+        fjsonPath = '../revision_files/' + specificDir + '/' + rev_id + '/' + f_file_name + '.json'
         fjson = open(fjsonPath, 'r')
         fjsonEncoded = fjson.read()
         jsonFile = re.sub(r"^\)\]\}\'", "", fjsonEncoded)
