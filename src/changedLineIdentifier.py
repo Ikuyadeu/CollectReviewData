@@ -31,7 +31,7 @@ with open('../gm_openstack.csv', 'rU') as fImport:
             break
         idx = i
         changeFlg = False
-        skipFlg = Flase
+        skipFlg = False
         rev_id = rev_file["rev_id"]
         f_file_name = rev_file["f_file_name"]
         # The json has like ]}' at the begining.
