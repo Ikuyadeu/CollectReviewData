@@ -34,6 +34,7 @@ with open('../gm_openstack.csv', 'rU') as fImport:
         skipFlg = False
         onlyAddedLineNumberList = []
         rev_id = rev_file["rev_id"]
+        previousRev_id = rev_file["rev_previousId"]
         f_file_name = rev_file["f_file_name"]
         # The json has like ]}' at the begining.
         fjsonPath = '../revision_files/' + specificDir + '/' + rev_id + '/' + f_file_name + '.json'
@@ -73,7 +74,7 @@ with open('../gm_openstack.csv', 'rU') as fImport:
                     for l in c['a']:
                         aCount += 1
                     endChange = aCount
-                    fResult.write(str(idx)+','+rev_id+','+f_file_name+','+str(startChange)+','+str(endChange)+"\n")
+                    fResult.write(str(idx)+','+rev_id+','+previousRev_id+','+f_file_name+','+str(addedLineNumber)+','+str(addedLineNumber+1)+"\n")
                     changeFlg = True
                 elif 'b' in c.keys():
                     onlyAddedLineNumberList.append(aCount)
@@ -83,7 +84,7 @@ with open('../gm_openstack.csv', 'rU') as fImport:
                 print(str(idx)+','+rev_id+','+f_file_name+","+"OnlyAdded"+"\n")
                 if (len(onlyAddedLineNumberList) > 0):
                     for addedLineNumber in onlyAddedLineNumberList:
-                        fResult.write(str(idx)+','+rev_id+','+f_file_name+','+str(addedLineNumber)+','+str(addedLineNumber+1)+"\n")
+                        fResult.write(str(idx)+','+rev_id+','+previousRev_id+','+f_file_name+','+str(addedLineNumber)+','+str(addedLineNumber+1)+"\n")
                 else:
                     fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+","+"NoChange"+"\n")
         else:

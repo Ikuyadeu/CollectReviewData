@@ -34,6 +34,7 @@ def main():
 
     # Define dictionary
     t_revision_dic = defaultdict(lambda: [])
+    t_previousRevision_dic = defaultdict(lambda: None) # Key: rev_changeId + rev_patchSetNum, content: previousRevId
     t_file_dic = defaultdict(lambda: [])
 
     # Connect DB
@@ -67,6 +68,9 @@ def main():
     # Store data into t_revisionDic
     for revision in revisions:
         t_revision_dic[revision[2]].append(revision)
+        preRevKey = str(revision[2]) + '_' + str(revision[3])
+        assert(t_previousRevision_dic[preRevKey] == None)
+        t_previousRevision_dic[preRevKey] = revision[1]
     for rev_file in files:
         t_file_dic[int(rev_file[1])].append(rev_file)
 
@@ -87,8 +91,11 @@ def main():
             rev_id = revision[1]
             rev_change_id = revision[2]
             rev_patch_set_num = revision[3]
+            assert((rev_patch_set_num - 1) >= 0)
+            preRevKey = str(rev_change_id) + '_' + str(int(rev_patch_set_num) - 1)
+            previousRev_id = t_previousRevision_dic[preRevKey]
             output_files += [[ch_id, ch_change_id, ch_change_id_num,
-                              rev_id, rev_change_id, quote_plus(rev_file[0]), rev_patch_set_num]
+                              rev_id, previousRev_id, rev_change_id, quote_plus(rev_file[0]), rev_patch_set_num]
                              for rev_file in rev_files]
             sys.stdout.write("\rChange: %d / %d, Revision: %d / %d" %
                              (i, changes_len, j, revisions_len))
@@ -98,7 +105,7 @@ def main():
         writer = csv.writer(csvfile, lineterminator='\n')
         sys.stdout.write("\rOutputting files...")
         writer.writerow(["ch_id", "ch_change_id", "ch_change_id_num",
-                         "rev_id", "rev_change_id", "f_file_name", "rev_patchSetNum"])
+                         "rev_id", "rev_previousId", "rev_change_id", "f_file_name", "rev_patchSetNum"])
         writer.writerows(output_files)
 
 if __name__ == '__main__':
