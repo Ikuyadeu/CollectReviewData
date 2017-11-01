@@ -74,7 +74,7 @@ with open('../gm_openstack.csv', 'rU') as fImport:
                     for l in c['a']:
                         aCount += 1
                     endChange = aCount
-                    fResult.write(str(idx)+','+rev_id+','+previousRev_id+','+f_file_name+','+str(addedLineNumber)+','+str(addedLineNumber+1)+"\n")
+                    fResult.write(str(idx)+','+rev_id+','+previousRev_id+','+f_file_name+','+str(startChange)+','+str(endChange)+"\n")
                     changeFlg = True
                 elif 'b' in c.keys():
                     onlyAddedLineNumberList.append(aCount)
