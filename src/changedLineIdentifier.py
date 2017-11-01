@@ -30,7 +30,8 @@ with open('../gm_openstack.csv', 'rU') as fImport:
         if i > endIdx:
             break
         idx = i
-        flg = False
+        changeFlg = False
+        skipFlg = Flase
         rev_id = rev_file["rev_id"]
         f_file_name = rev_file["f_file_name"]
         # The json has like ]}' at the begining.
@@ -59,6 +60,7 @@ with open('../gm_openstack.csv', 'rU') as fImport:
                 endChange = 0
                 if 'skip' in c.keys():
                     fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+","+"Skip"+"\n")
+                    skipFlg = True
                     break
                 if 'ab' in c.keys():
                     assert(('a' not in c.keys()) and ('b' not in c.keys()))
@@ -71,11 +73,11 @@ with open('../gm_openstack.csv', 'rU') as fImport:
                         aCount += 1
                     endChange = aCount
                     fResult.write(str(idx)+','+rev_id+','+f_file_name+','+str(startChange)+','+str(endChange)+"\n")
-                    flg = True
+                    changeFlg = True
                 elif 'b' in c.keys():
                     for l in c['b']:
                         bCount += 1
-            if (flg != True):
+            if (changeFlg != True) and (skipFlg == False):
                 fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+","+"OnlyAdded"+"\n")
         else:
             fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+","+"Delete"+"\n")
