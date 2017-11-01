@@ -32,6 +32,7 @@ with open('../gm_openstack.csv', 'rU') as fImport:
         idx = i
         changeFlg = False
         skipFlg = False
+        onlyAddedLineNumberList = []
         rev_id = rev_file["rev_id"]
         f_file_name = rev_file["f_file_name"]
         # The json has like ]}' at the begining.
@@ -75,10 +76,13 @@ with open('../gm_openstack.csv', 'rU') as fImport:
                     fResult.write(str(idx)+','+rev_id+','+f_file_name+','+str(startChange)+','+str(endChange)+"\n")
                     changeFlg = True
                 elif 'b' in c.keys():
+                    onlyAddedLineNumberList.append(aCount)
                     for l in c['b']:
                         bCount += 1
             if (changeFlg != True) and (skipFlg == False):
-                fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+","+"OnlyAdded"+"\n")
+                for addedLineNumber in onlyAddedLineNumberList:
+                    fResult.write(str(idx)+','+rev_id+','+f_file_name+','+str(addedLineNumber)+','+str(addedLineNumber+1)+"\n")
+                #fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+","+"OnlyAdded"+"\n")
         else:
             fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+","+"Delete"+"\n")
             continue
