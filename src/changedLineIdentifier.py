@@ -81,10 +81,11 @@ with open('../gm_openstack.csv', 'rU') as fImport:
                         bCount += 1
             if (changeFlg != True) and (skipFlg == False):
                 print(str(idx)+','+rev_id+','+f_file_name+","+"OnlyAdded"+"\n")
-                assert(len(onlyAddedLineNumberList) > 0)
-                for addedLineNumber in onlyAddedLineNumberList:
-                    fResult.write(str(idx)+','+rev_id+','+f_file_name+','+str(addedLineNumber)+','+str(addedLineNumber+1)+"\n")
-                #fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+","+"OnlyAdded"+"\n")
+                if (len(onlyAddedLineNumberList) > 0):
+                    for addedLineNumber in onlyAddedLineNumberList:
+                        fResult.write(str(idx)+','+rev_id+','+f_file_name+','+str(addedLineNumber)+','+str(addedLineNumber+1)+"\n")
+                else:
+                    fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+","+"NoChange"+"\n")
         else:
             fErrorLog.write(str(idx)+','+rev_id+','+f_file_name+","+"Delete"+"\n")
             continue
