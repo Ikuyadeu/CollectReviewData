@@ -18,8 +18,9 @@ cd CollectReviewData
 
 ## Unzip database csv
 ```sh
-mv ../gm_openstack.csv.zip .
 sudo apt install unzip
+sudo apt install zip
+mv ../gm_openstack.csv.zip .
 unzip ./gm_openstack.csv.zip
 rm ./gm_openstack.csv.zip
 ```
@@ -32,10 +33,9 @@ python3 src/RequestFileDiff.py gm_openstack https://review.openstack.org start e
 
 ## Compress files
 ```sh
-sudo apt install zip
 cd revision_files
-zip gm_openstackstart_end -r gm_openstack
-mv gm_openstackstart_end.zip ~
+zip gm_openstackstart_start_end -r gm_openstack
+mv gm_openstack_start_end.zip ~
 cd ../
 rm -r gm_openstack
 ```
@@ -43,7 +43,7 @@ rm -r gm_openstack
 ## Get the file by ssh
 ```sh
 exit
-scp -i initialkey.pem ubuntu@ec2-user@host:~/gm_openstackstart_end.zip .
+scp -i initialkey.pem ubuntu@ec2-user@host:~/gm_openstackstart_start_end.zip .
 ```
 
 ## Note
