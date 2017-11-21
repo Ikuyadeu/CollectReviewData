@@ -1,6 +1,8 @@
 # How to collect review file list
+
 ## 以下のホームページからデータベースを取得
-http://kin-y.github.io/miningReviewRepo/
+
+<http://kin-y.github.io/miningReviewRepo/>
 
 * OpenStack:Python
 * LibreOffice:Iroiro
@@ -10,6 +12,7 @@ http://kin-y.github.io/miningReviewRepo/
 * GerritHub:C?
 
 行数
+
 ```sh
 $ wc  gm_*.csv
  2177886 2177886  497020692 gm_aosp.csv
@@ -21,6 +24,7 @@ $ wc  gm_*.csv
 ```
 
 ファイルサイズ
+
 ```sh
 $ du -m gm_*.csv
 474     gm_aosp.csv
@@ -31,8 +35,9 @@ $ du -m gm_*.csv
 ```
 
 レビューシステムURL
-* aosp:https://android-review.googlesource.com
-* eclipse:https://git.eclipse.org/r
-* gerrithub:https://review.gerrithub.io
-* libreoffice:https://gerrit.libreoffice.org
-* openstack:https://review.openstack.org
+
+* aosp:<https://android-review.googlesource.com>
+* eclipse:<https://git.eclipse.org/r>
+* gerrithub:<https://review.gerrithub.io>
+* libreoffice:<https://gerrit.libreoffice.org>
+* openstack:<https://review.openstack.org>
