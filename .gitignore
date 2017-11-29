@@ -1,6 +1,7 @@
 *.pem
 .DS_Store
 *.json
+*.json-e
 *.csv
 *.zip
 # Byte-compiled / optimized / DLL files
