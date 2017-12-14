@@ -42,14 +42,14 @@ def main():
 
     # Get changes
     sys.stdout.write("\rCollecting changes...")
-    sql = "SELECT id, ch_Id, ch_changeId \
+    sql = "SELECT id, ch_Id, ch_changeId, ch_authorAccountId \
            FROM t_change"
     cursor.execute(sql)
     changes = cursor.fetchall()
 
     # Get revisions
     sys.stdout.write("\rCollecting revisions...")
-    sql = "SELECT id, rev_Id, rev_changeId, rev_patchSetNum \
+    sql = "SELECT id, rev_Id, rev_changeId, rev_patchSetNum, rev_createdTime \
            FROM t_revision"
     cursor.execute(sql)
     revisions = cursor.fetchall()
@@ -79,6 +79,7 @@ def main():
         ch_revisions = t_revision_dic[change[0]]
         ch_id = change[1]
         ch_change_id = change[2]
+        ch_author_account_id = change[3]
         revisions_len = len(ch_revisions)
         # Search from revisions
         for j, revision in enumerate(ch_revisions):
@@ -86,8 +87,9 @@ def main():
             rev_id = revision[1]
             rev_change_id = revision[2]
             rev_patch_set_num = revision[3]
-            output_files += [[ch_id, ch_change_id,
-                              rev_id, rev_change_id,
+            rev_created_time = revision[4]
+            output_files += [[ch_id, ch_change_id,ch_author_account_id,
+                              rev_id, rev_change_id, rev_created_time,
                               quote_plus(rev_file[0]), rev_patch_set_num]
                              for rev_file in rev_files]
             sys.stdout.write("\rChange: %d / %d, Revision: %d / %d" %
@@ -97,8 +99,8 @@ def main():
     with open(current_db + ".csv", 'w') as csvfile:
         writer = csv.writer(csvfile, lineterminator='\n')
         sys.stdout.write("\rOutputting files...")
-        writer.writerow(["ch_id", "ch_change_id",
-                         "rev_id", "rev_change_id",
+        writer.writerow(["ch_id", "ch_change_id", "ch_author_account_id",
+                         "rev_id", "rev_change_id", "rev_created_time"
                          "f_file_name", "rev_patchSetNum"])
         writer.writerows(output_files)
 
