@@ -88,7 +88,7 @@ def main():
             rev_change_id = revision[2]
             rev_patch_set_num = revision[3]
             rev_created_time = revision[4]
-            output_files += [[ch_id, ch_change_id,ch_author_account_id,
+            output_files += [[ch_id, ch_change_id, ch_author_account_id,
                               rev_id, rev_change_id, rev_created_time,
                               quote_plus(rev_file[0]), rev_patch_set_num]
                              for rev_file in rev_files]
@@ -100,7 +100,7 @@ def main():
         writer = csv.writer(csvfile, lineterminator='\n')
         sys.stdout.write("\rOutputting files...")
         writer.writerow(["ch_id", "ch_change_id", "ch_author_account_id",
-                         "rev_id", "rev_change_id", "rev_created_time"
+                         "rev_id", "rev_change_id", "rev_created_time",
                          "f_file_name", "rev_patchSetNum"])
         writer.writerows(output_files)
 
